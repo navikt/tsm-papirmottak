@@ -67,18 +67,16 @@ then "Modify Run configuration..."
 then add `-Dio.ktor.development=true -config=application-local.conf` to the "Program arguments".
 
 #### Kafka message
-The topic `teamdokumenthandtering.aapen-dok-journalfoering` uses Confluent Avro, not
-plain JSON. Use `KafkaAvroSerializer` with `JournalfoeringHendelseRecord` and the
-local schema registry at `http://localhost:8081`, started by Docker Compose.
-
-The integration test publishes an Avro record and a tombstone to an isolated Kafka
-container, using an in-memory schema registry, and waits for the consumer to commit both:
+To send a messages to the topic tsm.sykmeldinger
 ```bash
-./gradlew test --tests no.nav.tsm.IntegrationTest
+docker compose exec -T kafka kafka-console-producer \
+  --bootstrap-server localhost:9092 \
+  --topic tsm.sykmeldinger \
+  --property parse.key=true \
+  --property key.separator=: \
+  < src/test/resources/kafkaMessage.txt
 ```
 
-In NAIS, schema registry configuration comes from `KAFKA_SCHEMA_REGISTRY`,
-`KAFKA_SCHEMA_REGISTRY_USER`, and `KAFKA_SCHEMA_REGISTRY_PASSWORD`.
 
 ### Finding new available dependencies
 ``` bash
