@@ -1,0 +1,1 @@
+eb0a9800-b1b2-49e1-b7c8-ccef6ca3ab65:{"hendelsesId":"eb0a9800-b1b2-49e1-b7c8-ccef6ca3ab65","versjon":1,"hendelsesType":"JournalpostMottatt","journalpostId":123456789,"journalpostStatus":"MOTTATT","temaGammelt":"","temaNytt":"SYM","mottaksKanal":"SKAN_IM","kanalReferanseId":"eb0a9800-b1b2-49e1-b7c8-ccef6ca3ab75","behandlingstema":""}

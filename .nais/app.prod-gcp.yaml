@@ -1,0 +1,7 @@
+spec:
+  port: 8080
+  replicas:
+    min: 2
+    max: 6
+  kafka:
+    pool: nav-prod

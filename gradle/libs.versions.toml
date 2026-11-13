@@ -1,0 +1,35 @@
+[versions]
+jvmVersion = "25"
+
+kotlin = "2.4.21"
+logback = "1.6.6"
+logbackEncoder = "9.0"
+spotless = "8.10.4"
+jackson = "3.2.2"
+detekt = "2.0.0-alpha.6"
+ktfmt = "0.62"
+kotest = "6.2.7"
+joarkHendelse = "2.0.0"
+kafkaAvro = "8.4.0"
+
+[libraries]
+# Monitoring and observability
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logbackEncoder" }
+
+# Testing
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+
+#Kafka
+kafka-avro = { module = "io.confluent:kafka-avro-serializer", version.ref = "kafkaAvro" }
+teamdokumenthandtering-avro = { module = "no.nav.teamdokumenthandtering:teamdokumenthandtering-avro-schemas", version.ref = "joarkHendelse" }
+
+
+# Transitive Vulnerabilities
+jackson-core = { module = "tools.jackson.core:jackson-core", version.ref = "jackson" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+detekt = { id = "dev.detekt",  version.ref = "detekt" }

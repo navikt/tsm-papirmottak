@@ -1,0 +1,37 @@
+# See app.prod-gcp.yaml or app.dev-gcp.yaml for per env mixins values.
+# https://docs.nais.io/build/explanations/environment-mixins/
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: tsm-papirmottak
+  namespace: tsm
+  labels:
+    team: tsm
+spec:
+  port: 8080
+  replicas:
+    min: 1
+    max: 2
+    scalingStrategy:
+      cpu:
+        thresholdPercentage: 90
+  resources:
+    limits:
+      memory: 1Gi
+    requests:
+      cpu: 80m
+      memory: 600Mi
+  liveness:
+    path: /internal/health/alive
+  readiness:
+    path: /internal/health/ready
+  preStopHook:
+    http:
+      path: /internal/shutdown
+  prometheus:
+    enabled: true
+    path: /internal/metrics
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java

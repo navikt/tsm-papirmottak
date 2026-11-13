@@ -1,0 +1,87 @@
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+  packages: write
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: navikt/tsm-workflows/actions/gradle/test@main
+
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev')
+    steps:
+      - uses: actions/checkout@v7
+      - uses: navikt/tsm-workflows/actions/gradle/build@main
+        id: build
+        with:
+          team: "tsm"
+          salsa: false
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      image: ${{ steps.build.outputs.image }}
+
+  sbom:
+    name: Upload SBOM for build
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: navikt/tsm-workflows/actions/attest-sign@main
+        with:
+          image_ref: ${{ needs.build.outputs.image }}
+          team: tsm
+
+  deploy-dev:
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev')
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: nais/setup@v1
+        with:
+          team: tsm
+      - name: deploy to dev-gcp
+        run: |
+          nais apply .nais/app.yaml \
+            --environment dev-gcp \
+            --set spec.image="${{ needs.build.outputs.image }}" \
+            --wait
+  deploy-prod:
+    if: github.ref_name == 'main'
+    needs: [build, test, deploy-dev]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: nais/setup@v1
+        with:
+          team: tsm
+      - name: deploy to prod-gcp
+        run: |
+          nais apply .nais/app.yaml \
+            --environment prod-gcp \
+            --set spec.image="${{ needs.build.outputs.image }}" \
+            --wait
+
+  security:
+    name: Security
+    secrets: inherit
+    permissions:
+      contents: write
+      id-token: write
+      security-events: write
+    needs: build
+    uses: navikt/tsm-workflows/.github/workflows/security.yaml@main
+    with:
+      gradle: true
+      image: ${{ needs.build.outputs.image }}
+
