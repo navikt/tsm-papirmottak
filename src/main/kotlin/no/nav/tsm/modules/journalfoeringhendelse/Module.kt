@@ -80,7 +80,7 @@ private fun Application.configureConsumer() {
                     check(record is JournalfoeringHendelseRecord) {
                         "Expected JournalfoeringHendelseRecord on ${meta.topic}, received ${record?.javaClass?.name}"
                     }
-                    log.info("Received a JournalfoeringHendelseRecord stuff ${record.hendelsesId}")
+                    log.info("Received a JournalfoeringHendelseRecord ${record.hendelsesId} and journalpostId: ${record.journalpostId}")
                 }
             }
     }
