@@ -2,7 +2,7 @@ rootProject.name = "tsm-papirmottak"
 
 
 val ktorVersion = "3.6.1"
-val tsmKtorVersion = "1.3.8"
+val tsmKtorVersion = "1.3.9"
 
 dependencyResolutionManagement {
     repositories {
