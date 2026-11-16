@@ -33,6 +33,15 @@ class JournalfoeringHendelseAvroTopic(
                 schemaRegistryConfig.property("url").getString(),
             )
             put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true)
+            val username = schemaRegistryConfig.propertyOrNull("username")?.getString()
+            val password = schemaRegistryConfig.propertyOrNull("password")?.getString()
+            require((username == null) == (password == null)) {
+                "Schema registry username and password must be configured together"
+            }
+            if (username != null && password != null) {
+                put("basic.auth.credentials.source", "USER_INFO")
+                put("basic.auth.user.info", "$username:$password")
+            }
         }
 
     private val deserializer =
