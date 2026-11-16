@@ -67,13 +67,31 @@ then "Modify Run configuration..."
 then add `-Dio.ktor.development=true -config=application-local.conf` to the "Program arguments".
 
 #### Kafka message
-To send a messages to the topic tsm.sykmeldinger
 ```bash
-docker compose exec -T kafka kafka-console-producer \
-  --bootstrap-server localhost:9092 \
-  --topic tsm.sykmeldinger \
+docker compose exec -T schema-registry kafka-avro-console-producer \
+  --bootstrap-server kafka:29092 \
+  --topic teamdokumenthandtering.aapen-dok-journalfoering \
+  --property schema.registry.url=http://localhost:8081 \
   --property parse.key=true \
   --property key.separator=: \
+  --property key.serializer=org.apache.kafka.common.serialization.StringSerializer \
+  --property 'value.schema={
+    "type": "record",
+    "name": "JournalfoeringHendelseRecord",
+    "namespace": "no.nav.joarkjournalfoeringhendelser",
+    "fields": [
+      {"name": "hendelsesId", "type": "string"},
+      {"name": "versjon", "type": "int"},
+      {"name": "hendelsesType", "type": "string"},
+      {"name": "journalpostId", "type": "long"},
+      {"name": "journalpostStatus", "type": "string"},
+      {"name": "temaGammelt", "type": "string"},
+      {"name": "temaNytt", "type": "string"},
+      {"name": "mottaksKanal", "type": "string"},
+      {"name": "kanalReferanseId", "type": "string"},
+      {"name": "behandlingstema", "type": "string", "default": ""}
+    ]
+  }' \
   < src/test/resources/kafkaMessage.txt
 ```
 
