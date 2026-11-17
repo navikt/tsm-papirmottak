@@ -12,11 +12,7 @@ This the high level flow of the application
     id2([Skanmot Helse]) --> id3([joark])
     id3([joark]) --> A[\teamdokumenthandtering.aapen-dok-journalfoering/]
     A[\teamdokumenthandtering.aapen-dok-journalfoering/] --> id4([tsm-papirmottak])
-    id4([tsm-papirmottak])-->|Manuell journalføring| id5([tsm-oppgave])
-    id5([tsm-oppgave]) -->|Manuell oppgave| id6([gosys])
-    id6([gosys]) -->|oppgave i tsm-syk-dig| id7([tsm-syk-dig])
-    id7([tsm-syk-dig]) --> C[\tsm.relevante-scans/]
-    id4([tsm-papirmottak]) -->|Automatisk journalføring| C[\tsm.relevante-scans/]
+    id4([tsm-papirmottak]) --> C[\tsm.relevante-scans/]
 ```
 
 ## Requirements for developing the application
