@@ -11,8 +11,9 @@ This the high level flow of the application
     id1(Filområde skannede dokumenter) --> id2([Skanmot Helse])
     id2([Skanmot Helse]) --> id3([joark])
     id3([joark]) --> A[\teamdokumenthandtering.aapen-dok-journalfoering/]
-    A[\teamdokumenthandtering.aapen-dok-journalfoering/] --> id4([tsm-papirmottak])
-    id4([tsm-papirmottak]) --> C[\tsm.relevante-scans/]
+    A[\teamdokumenthandtering.aapen-dok-journalfoering/] --> |read topic| id4[tsm-papirmottak]
+    id4[tsm-papirmottak] <--> |Fetch journalpost| id5[saf]
+    id4[tsm-papirmottak] --> |write topic| C[\tsm.relevante-scans/]
 ```
 
 ## Requirements for developing the application
