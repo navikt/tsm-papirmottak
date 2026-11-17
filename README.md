@@ -13,6 +13,8 @@ This the high level flow of the application
     id3([joark]) --> A[\teamdokumenthandtering.aapen-dok-journalfoering/]
     A[\teamdokumenthandtering.aapen-dok-journalfoering/] --> |read topic| id4[tsm-papirmottak]
     id4[tsm-papirmottak] <--> |Fetch journalpost| id5[saf]
+    id4[tsm-papirmottak] <--> |Fetch journalpost| id5[tsm-behanlder]
+    id4[tsm-papirmottak] <--> |Fetch journalpost| id6[tsm-pdl-cache]
     id4[tsm-papirmottak] --> |write topic| C[\tsm.relevante-scans/]
 ```
 
