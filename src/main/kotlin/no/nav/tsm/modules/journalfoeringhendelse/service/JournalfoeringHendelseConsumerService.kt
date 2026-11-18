@@ -10,7 +10,21 @@ class JournalfoeringHendelseConsumerService(
     private val logger = logger()
 
     suspend fun handleRecord(record: JournalfoeringHendelseRecord) {
-        logger.info(
+        
+            val journalpostId = record.journalpostId.toString()
+            val temaNytt = record.temaNytt.toString()
+            val mottaksKanal = record.mottaksKanal.toString()
+            val hendelsesType = record.hendelsesType.toString()        
+
+            if (
+                temaNytt == "SYM" &&
+                    (mottaksKanal == "SKAN_NETS" || mottaksKanal == "SKAN_IM") &&
+                    (hendelsesType == "MidlertidigJournalført" ||
+                        hendelsesType == "JournalpostMottatt" ||
+                        hendelsesType == "TemaEndret")
+            ) {
+
+         logger.info(
             "Received a JournalfoeringHendelseRecord ${record.hendelsesId} and journalpostId: ${record.journalpostId}"
         )
 
@@ -20,5 +34,11 @@ class JournalfoeringHendelseConsumerService(
         logger.info(
             "Journalpostid: ${record.journalpostId} er gjelderUtland: ${journalpostMetadata?.gjelderUtland}"
         )
+        }
+       else {
+           logger.info(
+            "Received a JournalfoeringHendelseRecord that we do not want ${record.hendelsesId} and journalpostId: ${record.journalpostId}"
+        )
+       }
     }
 }
