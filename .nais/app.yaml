@@ -35,3 +35,6 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: java
+  azure:
+    application:
+      enabled: true
