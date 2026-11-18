@@ -10,7 +10,8 @@ detekt = "2.0.0-alpha.6"
 ktfmt = "0.62"
 kotest = "6.2.7"
 joarkHendelse = "2.0.0"
-kafkaAvro = "8.4.0"
+kafkaAvro = "8.4.1"
+mockk = "1.14.12"
 
 [libraries]
 # Monitoring and observability
@@ -20,6 +21,7 @@ logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", ve
 # Testing
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 #Kafka
 kafka-avro = { module = "io.confluent:kafka-avro-serializer", version.ref = "kafkaAvro" }

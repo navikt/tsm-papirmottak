@@ -5,3 +5,6 @@ spec:
     max: 2
   kafka:
     pool: nav-dev
+  env:
+    - name: SAF_ENDPOINT
+      value: https://saf-q2.dev-fss-pub.nais.io

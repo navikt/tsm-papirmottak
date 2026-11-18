@@ -5,3 +5,6 @@ spec:
     max: 6
   kafka:
     pool: nav-prod
+  env:
+    - name: SAF_ENDPOINT
+      value: https://saf.prod-fss-pub.nais.io

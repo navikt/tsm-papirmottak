@@ -20,6 +20,10 @@ dependencies {
     implementation(ktorLibs.server.core)
     implementation(ktorLibs.server.netty)
 
+    implementation(ktorLibs.client.apache5)
+    implementation(ktorLibs.client.contentNegotiation)
+    implementation(ktorLibs.client.core)
+
 
     implementation(tsmKtorLibs.core)
     implementation(tsmKtorLibs.kafka)
@@ -37,9 +41,9 @@ dependencies {
     testImplementation(libs.kotlin.test.junit)
     testImplementation(ktorLibs.server.testHost)
     testImplementation(ktorLibs.serialization.jackson3)
-    testImplementation(ktorLibs.client.contentNegotiation)
     testImplementation(tsmKtorLibs.kafka.test)
     testImplementation(libs.kotest)
+    testImplementation(libs.mockk)
 
 
 }

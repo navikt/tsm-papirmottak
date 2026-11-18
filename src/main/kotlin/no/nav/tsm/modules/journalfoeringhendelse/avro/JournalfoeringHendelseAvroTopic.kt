@@ -1,4 +1,4 @@
-package no.nav.tsm.modules.journalfoeringhendelse
+package no.nav.tsm.modules.journalfoeringhendelse.avro
 
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig
 import io.confluent.kafka.serializers.KafkaAvroDeserializer
@@ -7,14 +7,21 @@ import io.ktor.server.config.ApplicationConfig
 import no.nav.joarkjournalfoeringhendelser.JournalfoeringHendelseRecord
 import no.nav.tsm.ktor.kafka.consumer.KafkaTopic
 import no.nav.tsm.ktor.kafka.consumer.RecordMeta
+import no.nav.tsm.ktor.logger
+import no.nav.tsm.modules.journalfoeringhendelse.saf.SafJournalpostClient
+import no.nav.tsm.modules.journalfoeringhendelse.service.JournalfoeringHendelseConsumerService
 import org.apache.avro.util.ClassSecurityValidator
-import org.slf4j.Logger
 import tools.jackson.databind.ObjectMapper
 
 class JournalfoeringHendelseAvroTopic(
     schemaRegistryConfig: ApplicationConfig,
-    private val log: Logger,
+    safJournalpostClient: SafJournalpostClient,
 ) : KafkaTopic.Unbatched<JournalfoeringHendelseRecord>, AutoCloseable {
+
+    private val logger = logger()
+    private val journalfoeringHendelseConsumerService =
+        JournalfoeringHendelseConsumerService(safjournalpostClient = safJournalpostClient)
+
     init {
         ClassSecurityValidator.setGlobal(
             ClassSecurityValidator.composite(
@@ -50,7 +57,7 @@ class JournalfoeringHendelseAvroTopic(
     override val topic = "teamdokumenthandtering.aapen-dok-journalfoering"
     override val shouldSkip: (suspend (RecordMeta, Exception) -> Boolean)? = null
     override val onTombstone: suspend (RecordMeta) -> Unit = { meta ->
-        log.info("Received a JournalfoeringHendelseRecord tombstone for ID ${meta.key}, skips")
+        logger.info("Received a JournalfoeringHendelseRecord tombstone for ID ${meta.key}, skips")
     }
 
     override fun close() {
@@ -71,8 +78,6 @@ class JournalfoeringHendelseAvroTopic(
         check(record is JournalfoeringHendelseRecord) {
             "Expected JournalfoeringHendelseRecord on ${meta.topic}, received ${record?.javaClass?.name}"
         }
-        log.info(
-            "Received a JournalfoeringHendelseRecord ${record.hendelsesId} and journalpostId: ${record.journalpostId}"
-        )
+        journalfoeringHendelseConsumerService.handleRecord(record)
     }
 }

@@ -6,11 +6,13 @@ import no.nav.tsm.ktor.nais.getRuntimeCluster
 
 class Runtime(val env: RuntimeCluster, val name: String)
 
-class Environment(val runtime: Runtime)
+class Environment(val runtime: Runtime, val safEndpoint: String)
 
 fun initializeEnvironment(config: ApplicationConfig): Environment {
 
     return Environment(
-        runtime = Runtime(env = getRuntimeCluster(), name = config.property("app.name").getString())
+        runtime =
+            Runtime(env = getRuntimeCluster(), name = config.property("app.name").getString()),
+        safEndpoint = config.property("external.safEndpoint").getAs(),
     )
 }

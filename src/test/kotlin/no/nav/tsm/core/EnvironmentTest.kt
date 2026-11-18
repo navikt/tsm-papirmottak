@@ -16,7 +16,11 @@ class EnvironmentTest {
         )
 
     private val baseNaisVars =
-        mapOf("NAIS_POD_NAME" to "tsm-papirmottak-prod-123", "NAIS_CLUSTER_NAME" to "prod-gcp")
+        mapOf(
+            "NAIS_POD_NAME" to "tsm-papirmottak-prod-123",
+            "NAIS_CLUSTER_NAME" to "prod-gcp",
+            "SAF_ENDPOINT" to "http://localhost:8181",
+        )
 
     @Test
     fun `base nais environment should be properly configured`() {
