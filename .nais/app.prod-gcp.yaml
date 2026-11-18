@@ -5,6 +5,10 @@ spec:
     max: 6
   kafka:
     pool: nav-prod
+  accessPolicy:
+    outbound:
+      external:
+        - host: saf.prod-fss-pub.nais.io
   env:
     - name: SAF_ENDPOINT
       value: https://saf.prod-fss-pub.nais.io
