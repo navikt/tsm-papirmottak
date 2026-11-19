@@ -12,11 +12,14 @@ kotest = "6.2.7"
 joarkHendelse = "2.0.0"
 kafkaAvro = "8.4.1"
 mockk = "1.14.12"
+arrow = "2.3.0.1"
 
 [libraries]
 # Monitoring and observability
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logbackEncoder" }
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+
 
 # Testing
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }

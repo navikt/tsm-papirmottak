@@ -1,7 +1,6 @@
 package no.nav.tsm.modules.journalfoeringhendelse.saf.models
 
 import java.time.LocalDateTime
-import no.nav.tsm.modules.journalfoeringhendelse.saf.DokumentMedTittel
 
 data class JournalpostMetadata(
     val bruker: Bruker,
@@ -21,4 +20,10 @@ data class DokumentInfo(
     val filtype: String,
     val filUUID: String,
     val variantFormat: DokumentVariantFormat,
+)
+
+data class DokumentMedTittel(
+    val tittel: String,
+    val dokumentInfoId: String,
+    val variantformat: DokumentVariantFormat,
 )

@@ -7,24 +7,37 @@ import no.nav.tsm.core.Environment
 import no.nav.tsm.ktor.di.dynamicDependencies
 import no.nav.tsm.ktor.kafka.consumer.KafkaConsumer
 import no.nav.tsm.modules.journalfoeringhendelse.avro.JournalfoeringHendelseAvroTopic
+import no.nav.tsm.modules.journalfoeringhendelse.pdl.PdlClient
+import no.nav.tsm.modules.journalfoeringhendelse.pdl.PdlTokenClient
 import no.nav.tsm.modules.journalfoeringhendelse.saf.SafJournalpostClient
 import no.nav.tsm.modules.journalfoeringhendelse.saf.SafTokenClient
 
 fun Application.configureJournalfoeringHendelse() {
 
     dynamicDependencies {
-        local { provide(SafTokenClient.Local::class) }
-        cloud { provide(SafTokenClient.Remote::class) }
+        local {
+            provide(SafTokenClient.Local::class)
+            provide(PdlTokenClient.Local::class)
+        }
+        cloud {
+            provide(SafTokenClient.Remote::class)
+            provide(PdlTokenClient.Remote::class)
+        }
     }
 
     dependencies { provide(SafJournalpostClient::class) }
+    dependencies { provide(PdlClient::class) }
 
     val safJournalpostClient: SafJournalpostClient by dependencies
+    val pdlClient: PdlClient by dependencies
 
-    configureConsumer(safJournalpostClient)
+    configureConsumer(safJournalpostClient, pdlClient)
 }
 
-private fun Application.configureConsumer(safJournalpostClient: SafJournalpostClient) {
+private fun Application.configureConsumer(
+    safJournalpostClient: SafJournalpostClient,
+    pdlClient: PdlClient,
+) {
 
     val env: Environment by dependencies
 
@@ -32,6 +45,7 @@ private fun Application.configureConsumer(safJournalpostClient: SafJournalpostCl
         JournalfoeringHendelseAvroTopic(
             environment.config.config("kafka.schemaRegistry"),
             safJournalpostClient,
+            pdlClient,
         )
 
     install(KafkaConsumer) {

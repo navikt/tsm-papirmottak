@@ -7,6 +7,7 @@ import io.ktor.server.plugins.di.*
 import no.nav.tsm.core.Environment
 import no.nav.tsm.core.initializeEnvironment
 import no.nav.tsm.ktor.auth.texas.Texas
+
 fun Application.configureDependencies() {
     val config = environment.config
 

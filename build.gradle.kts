@@ -24,6 +24,8 @@ dependencies {
     implementation(ktorLibs.client.contentNegotiation)
     implementation(ktorLibs.client.core)
 
+    implementation(libs.arrow.core)
+
 
     implementation(tsmKtorLibs.core)
     implementation(tsmKtorLibs.kafka)

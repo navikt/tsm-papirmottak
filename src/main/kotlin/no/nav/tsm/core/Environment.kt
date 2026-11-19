@@ -6,7 +6,7 @@ import no.nav.tsm.ktor.nais.getRuntimeCluster
 
 class Runtime(val env: RuntimeCluster, val name: String)
 
-class Environment(val runtime: Runtime, val safEndpoint: String)
+class Environment(val runtime: Runtime, val safEndpoint: String, val tsmPdlCacheEndpoint: String)
 
 fun initializeEnvironment(config: ApplicationConfig): Environment {
 
@@ -14,5 +14,6 @@ fun initializeEnvironment(config: ApplicationConfig): Environment {
         runtime =
             Runtime(env = getRuntimeCluster(), name = config.property("app.name").getString()),
         safEndpoint = config.property("external.safEndpoint").getAs(),
+        tsmPdlCacheEndpoint = config.property("external.tsmPdlCacheEndpoint").getAs(),
     )
 }

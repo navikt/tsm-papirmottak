@@ -8,6 +8,7 @@ import no.nav.joarkjournalfoeringhendelser.JournalfoeringHendelseRecord
 import no.nav.tsm.ktor.kafka.consumer.KafkaTopic
 import no.nav.tsm.ktor.kafka.consumer.RecordMeta
 import no.nav.tsm.ktor.logger
+import no.nav.tsm.modules.journalfoeringhendelse.pdl.PdlClient
 import no.nav.tsm.modules.journalfoeringhendelse.saf.SafJournalpostClient
 import no.nav.tsm.modules.journalfoeringhendelse.service.JournalfoeringHendelseConsumerService
 import org.apache.avro.util.ClassSecurityValidator
@@ -16,11 +17,15 @@ import tools.jackson.databind.ObjectMapper
 class JournalfoeringHendelseAvroTopic(
     schemaRegistryConfig: ApplicationConfig,
     safJournalpostClient: SafJournalpostClient,
+    pdlClient: PdlClient,
 ) : KafkaTopic.Unbatched<JournalfoeringHendelseRecord>, AutoCloseable {
 
     private val logger = logger()
     private val journalfoeringHendelseConsumerService =
-        JournalfoeringHendelseConsumerService(safjournalpostClient = safJournalpostClient)
+        JournalfoeringHendelseConsumerService(
+            safjournalpostClient = safJournalpostClient,
+            pdlClient = pdlClient,
+        )
 
     init {
         ClassSecurityValidator.setGlobal(

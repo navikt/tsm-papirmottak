@@ -7,6 +7,10 @@ spec:
     pool: nav-dev
   accessPolicy:
     outbound:
+      rules:
+        - application: logging
+          namespace: nais-system
+        - application: tsm-pdl-cache
       external:
         - host: saf-q2.dev-fss-pub.nais.io
   env:

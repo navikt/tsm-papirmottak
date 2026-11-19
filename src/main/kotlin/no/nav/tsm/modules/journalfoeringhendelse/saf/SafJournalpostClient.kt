@@ -17,6 +17,7 @@ import no.nav.tsm.ktor.logger
 import no.nav.tsm.modules.journalfoeringhendelse.saf.models.Bruker
 import no.nav.tsm.modules.journalfoeringhendelse.saf.models.Dokument
 import no.nav.tsm.modules.journalfoeringhendelse.saf.models.DokumentInfo
+import no.nav.tsm.modules.journalfoeringhendelse.saf.models.DokumentMedTittel
 import no.nav.tsm.modules.journalfoeringhendelse.saf.models.DokumentVariantFormat
 import no.nav.tsm.modules.journalfoeringhendelse.saf.models.FindJournalpostRequest
 import no.nav.tsm.modules.journalfoeringhendelse.saf.models.FindJournalpostResponse
@@ -150,12 +151,6 @@ fun finnDokumentIdForOcr(dokumentListe: List<Dokument>?): String? {
     log.warn("Not found OCR-document")
     return null
 }
-
-data class DokumentMedTittel(
-    val tittel: String,
-    val dokumentInfoId: String,
-    val variantformat: DokumentVariantFormat,
-)
 
 fun finnDokumentIdForPdf(dokumentListe: List<Dokument>?): List<DokumentMedTittel> {
     val dokumenter =
