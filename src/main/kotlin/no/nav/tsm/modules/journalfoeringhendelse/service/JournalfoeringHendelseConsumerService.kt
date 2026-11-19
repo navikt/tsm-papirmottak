@@ -47,7 +47,7 @@ class JournalfoeringHendelseConsumerService(
                 } ?: null
 
             if(brukerIdentId == null) {
-                log.warn("brukerIdentId is null, create fordelings oppgave")
+                logger.warn("brukerIdentId is null, create fordelings oppgave")
             } 
             else {
             val person =
