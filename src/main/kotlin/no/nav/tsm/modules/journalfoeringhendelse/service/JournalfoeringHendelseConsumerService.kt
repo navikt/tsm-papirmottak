@@ -42,10 +42,14 @@ class JournalfoeringHendelseConsumerService(
 
             val brukerIdentId =
                 when (journalpostMetadata?.bruker?.type) {
-                    "ORGNR" -> throw IllegalStateException("Bruker id is ORGNR")
+                    "ORGNR" ->  null
                     else -> journalpostMetadata?.bruker?.id
-                } ?: throw IllegalStateException("Bruker id is null")
+                } ?: null
 
+            if(brukerIdentId == null) {
+                logger.warn("brukerIdentId is null, create fordelings oppgave")
+            } 
+            else {
             val person =
                 pdlClient.getPerson(brukerIdentId).getOrElse {
                     throw RuntimeException("Did not find person for journalpostId: $journalpostId ")
@@ -53,7 +57,7 @@ class JournalfoeringHendelseConsumerService(
 
             teamlogger.info(
                 "Got PDL person ident ${person.identer.first { !it.historisk && it.gruppe == PdlIdentgruppe.FOLKEREGISTERIDENT }.ident} for journalpostId: $journalpostId"
-            )
+            )}
         } else {
             logger.debug(
                 "Received a JournalfoeringHendelseRecord that we do not want ${record.hendelsesId} and journalpostId: ${record.journalpostId}"
