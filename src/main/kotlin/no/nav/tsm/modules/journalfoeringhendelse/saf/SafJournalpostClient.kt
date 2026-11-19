@@ -168,7 +168,7 @@ fun finnDokumentIdForPdf(dokumentListe: List<Dokument>?): List<DokumentMedTittel
 
     if (dokumenter.isNullOrEmpty()) {
         log.error("Could not find PDF document")
-        throw RuntimeException("Received a paper medical certificate without a PDF")
+        throw RuntimeException("Received a sykmelding without a PDF")
     }
 
     return dokumenter
@@ -181,7 +181,7 @@ const val BREVKODE_NORSK: String = "NAV 08-07.04"
 fun sykmeldingGjelderUtland(dokumentListe: List<Dokument>?, dokumentId: String?): Boolean {
     if (dokumentListe.isNullOrEmpty()) {
         log.warn(
-            "Missing information regarding document code; assuming a foreign medical certificate."
+            "Missing information regarding document code; assuming a utenlandsk sykmelding."
         )
         return true
     }

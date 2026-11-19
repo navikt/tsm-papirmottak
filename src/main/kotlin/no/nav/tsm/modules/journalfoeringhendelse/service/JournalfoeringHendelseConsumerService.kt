@@ -55,7 +55,7 @@ class JournalfoeringHendelseConsumerService(
                 "Got PDL person ident ${person.identer.first { !it.historisk && it.gruppe == PdlIdentgruppe.FOLKEREGISTERIDENT }.ident} for journalpostId: $journalpostId"
             )
         } else {
-            logger.info(
+            logger.debug(
                 "Received a JournalfoeringHendelseRecord that we do not want ${record.hendelsesId} and journalpostId: ${record.journalpostId}"
             )
         }
