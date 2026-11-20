@@ -100,15 +100,15 @@ class SafJournalpostClient(
                 }
             } ?: emptyList()
 
-        val dokumentId: String? = finnDokumentIdForOcr(journalpost.dokumenter)
+        val dokumentId: String? = finnDokumentIdForOcr(journalpost.dokumenter, journalpostId)
         return journalpost.let {
-            val dokumenter = finnDokumentIdForPdf(journalpost.dokumenter)
+            val dokumenter = finnDokumentIdForPdf(journalpost.dokumenter, journalpostId)
 
             JournalpostMetadata(
                 bruker = Bruker(it.bruker?.id, it.bruker?.type?.name),
                 jpErIkkeJournalfort = erIkkeJournalfort(it.journalstatus),
-                gjelderUtland = sykmeldingGjelderUtland(it.dokumenter, dokumentId),
-                datoOpprettet = dateTimeStringTilLocalDateTime(it.datoOpprettet),
+                gjelderUtland = sykmeldingGjelderUtland(it.dokumenter, dokumentId, journalpostId),
+                datoOpprettet = dateTimeStringTilLocalDateTime(it.datoOpprettet, journalpostId),
                 dokumentInfoIdPdf = dokumenter.first().dokumentInfoId,
                 dokumenter = dokumenter,
                 alleDokumenter = alleDokumenter,
@@ -123,7 +123,7 @@ class SafJournalpostClient(
     }
 }
 
-fun dateTimeStringTilLocalDateTime(dateTime: String?): LocalDateTime? {
+fun dateTimeStringTilLocalDateTime(dateTime: String?, journalpostId: String): LocalDateTime? {
     dateTime?.let {
         return try {
             LocalDateTime.parse(dateTime)
@@ -131,28 +131,36 @@ fun dateTimeStringTilLocalDateTime(dateTime: String?): LocalDateTime? {
                 .withZoneSameInstant(ZoneOffset.UTC)
                 .toLocalDateTime()
         } catch (e: Exception) {
-            log.error("Journalpost entry does not have a valid datoOpprettet", e)
+            log.error(
+                "Journalpost entry does not have a valid datoOpprettet, journalpostId: $journalpostId",
+                e,
+            )
             null
         }
     }
-    log.error("Journalpost missing datoOpprettet")
+    log.error("Journalpost missing datoOpprettet, journalpostId: $journalpostId")
     return null
 }
 
-fun finnDokumentIdForOcr(dokumentListe: List<Dokument>?): String? {
+fun finnDokumentIdForOcr(dokumentListe: List<Dokument>?, journalpostId: String): String? {
     dokumentListe?.forEach { dokument ->
         dokument.dokumentvarianter.forEach {
             if (it.variantformat.name == "ORIGINAL") {
-                log.info("Found OCR-document dokumentInfoId: ${dokument.dokumentInfoId}")
+                log.info(
+                    "Found OCR-document dokumentInfoId: ${dokument.dokumentInfoId}, journalpostId: $journalpostId"
+                )
                 return dokument.dokumentInfoId
             }
         }
     }
-    log.warn("Not found OCR-document")
+    log.info("Not found OCR-document, journalpostId: $journalpostId")
     return null
 }
 
-fun finnDokumentIdForPdf(dokumentListe: List<Dokument>?): List<DokumentMedTittel> {
+fun finnDokumentIdForPdf(
+    dokumentListe: List<Dokument>?,
+    journalpostId: String,
+): List<DokumentMedTittel> {
     val dokumenter =
         dokumentListe
             ?.filter {
@@ -168,7 +176,7 @@ fun finnDokumentIdForPdf(dokumentListe: List<Dokument>?): List<DokumentMedTittel
 
     if (dokumenter.isNullOrEmpty()) {
         log.error("Could not find PDF document")
-        throw RuntimeException("Received a sykmelding without a PDF")
+        throw RuntimeException("Received a sykmelding without a PDF, journalpostId: $journalpostId")
     }
 
     return dokumenter
@@ -178,10 +186,14 @@ const val GAMMEL_BREVKODE_UTLAND: String = "900023"
 const val BREVKODE_UTLAND: String = "NAV 08-07.04 U"
 const val BREVKODE_NORSK: String = "NAV 08-07.04"
 
-fun sykmeldingGjelderUtland(dokumentListe: List<Dokument>?, dokumentId: String?): Boolean {
+fun sykmeldingGjelderUtland(
+    dokumentListe: List<Dokument>?,
+    dokumentId: String?,
+    journalpostId: String,
+): Boolean {
     if (dokumentListe.isNullOrEmpty()) {
         log.warn(
-            "Missing information regarding document code; assuming a utenlandsk sykmelding."
+            "Missing information regarding document code; assuming a utenlandsk sykmelding, journalpostId: $journalpostId"
         )
         return true
     }
@@ -193,12 +205,14 @@ fun sykmeldingGjelderUtland(dokumentListe: List<Dokument>?, dokumentId: String?)
         if (dokumenterMedRiktigId.isNotEmpty()) {
             brevkode = dokumenterMedRiktigId[0].brevkode
             if (brevkode != BREVKODE_NORSK) {
-                log.warn("Found OCR file with unexpected letter code: $brevkode")
+                log.warn(
+                    "Found OCR file with unexpected letter code: $brevkode, journalpostId: $journalpostId"
+                )
             }
         }
     } else {
         log.info(
-            "Missing document ID for OCR; attempting to determine letter code from remaining documents."
+            "Missing document ID for OCR; attempting to determine letter code from remaining documents, journalpostId: $journalpostId"
         )
         val inneholderUtlandBrevkode: Boolean = dokumentListe.any { dok ->
             dok.brevkode == BREVKODE_UTLAND
@@ -215,10 +229,14 @@ fun sykmeldingGjelderUtland(dokumentListe: List<Dokument>?, dokumentId: String?)
         }
     }
     return if (brevkode == BREVKODE_UTLAND || brevkode == GAMMEL_BREVKODE_UTLAND) {
-        log.info("Sykmelding refers to a utenlandsk sykmelding, brevkode: {}", brevkode)
+        log.info(
+            "Sykmelding refers to a utenlandsk sykmelding, brevkode: $brevkode, journalpostId: $journalpostId"
+        )
         true
     } else {
-        log.info("Sykmelding refers to a innenlands-sykmelding, brevkode: {}", brevkode)
+        log.info(
+            "Sykmelding refers to a innenlands-sykmelding,brevkode: $brevkode journalpostId: $journalpostId"
+        )
         false
     }
 }
