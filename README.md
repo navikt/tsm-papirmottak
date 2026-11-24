@@ -7,8 +7,8 @@ This the high level flow of the application
 ```mermaid
   graph TD
     papirsykmelding --> Skanner
-    Skanner --> id1(Filområde skannede dokumenter)
-    id1(Filområde skannede dokumenter) --> id2([Skanmot Helse])
+    Skanner --> id1(Scanned documents file area)
+    id1(Scanned documents file arear) --> id2([Skanmot Helse])
     id2([Skanmot Helse]) --> id3([joark])
     id3([joark]) --> A[\teamdokumenthandtering.aapen-dok-journalfoering/]
     A[\teamdokumenthandtering.aapen-dok-journalfoering/] --> |read topic| id4[tsm-papirmottak]
