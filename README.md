@@ -15,7 +15,12 @@ This the high level flow of the application
     id4[tsm-papirmottak] <--> |Fetch journalpostMetdata| id5[saf]
     id4[tsm-papirmottak] <--> |Fetch behandler| id6[tsm-behandler]
     id4[tsm-papirmottak] <--> |Fetch pasient| id7[tsm-pdl-cache]
-    id4[tsm-papirmottak] --> |write topic| C[\tsm.relevante-scans/]
+    id4[tsm-papirmottak] <--> |Create oppgave| id8[tsm-oppgave]
+    id4[tsm-papirmottak] <--> |Get ICPC-2B codes| id9[hdir-icpc-2]
+    id4[tsm-papirmottak] <--> |Get Tss for infotrygdId| id10[tss]
+    id4[tsm-papirmottak] <--> |Update and finish journalpost| id11[dokakriv]
+    id4[tsm-papirmottak] <--> |Write topic| C[\teamsykmelding.ok-sykmelding
+/]
 ```
 
 ## Requirements for developing the application
