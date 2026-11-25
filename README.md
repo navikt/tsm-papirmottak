@@ -15,9 +15,7 @@ This the high level flow of the application
     id4[tsm-papirmottak] <--> |Fetch journalpostMetdata| id5[saf]
     id4[tsm-papirmottak] <--> |Fetch behandler| id6[tsm-behandler]
     id4[tsm-papirmottak] <--> |Fetch pasient| id7[tsm-pdl-cache]
-    id4[tsm-papirmottak] <--> |Create oppgave| id8[tsm-oppgave]
-    id4[tsm-papirmottak] <--> |Update and finish journalpost| id10[dokakriv]
-    id4[tsm-papirmottak] <--> |Write topic| C[\tsm.sykmeldinger-input
+    id4[tsm-papirmottak] <--> |Write topic| C[\tsm.papirsykmeldinger
 /]
 ```
 
