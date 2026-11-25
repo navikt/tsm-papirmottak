@@ -1,6 +1,7 @@
 package no.nav.tsm.core.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import no.nav.tsm.modules.journalfoeringhendelse.saf.models.Dokument
 
 enum class TsmJournalpostType {
     NORSK_PAPIR_SYKMELDING_OCR_OK,
@@ -14,10 +15,12 @@ sealed interface Journalpost {
     @get:JsonProperty(access = JsonProperty.Access.READ_ONLY) val type: TsmJournalpostType
     val journalpostId: String
     val sykmeldingId: String
+    val dokumenter: List<Dokument>
 
     data class NorskPapirSykmeldingOcrOK(
         override val sykmeldingId: String,
         override val journalpostId: String,
+        override val dokumenter: List<Dokument>,
         val ocrFile: String,
         val newSykmeldingFormat: String,
     ) : Journalpost {
@@ -27,6 +30,8 @@ sealed interface Journalpost {
     data class NorskPapirSykmeldingOcrDelvis(
         override val sykmeldingId: String,
         override val journalpostId: String,
+        override val dokumenter: List<Dokument>,
+        val newSykmeldingFormat: String,
         val ocrFile: String,
     ) : Journalpost {
         override val type = TsmJournalpostType.NORSK_PAPIR_SYKMELDING_OCR_DELVIS
@@ -35,6 +40,7 @@ sealed interface Journalpost {
     data class NorskPapirSykmeldingOcrIngen(
         override val sykmeldingId: String,
         override val journalpostId: String,
+        override val dokumenter: List<Dokument>,
     ) : Journalpost {
         override val type = TsmJournalpostType.NORSK_PAPIR_SYKMELDING_OCR_INGEN
     }
@@ -42,12 +48,16 @@ sealed interface Journalpost {
     data class UtenlandskPapirSykmelding(
         override val sykmeldingId: String,
         override val journalpostId: String,
+        override val dokumenter: List<Dokument>,
     ) : Journalpost {
         override val type = TsmJournalpostType.UTENLANDSK_PAPIR_SYKMELDING
     }
 
-    data class Ukjent(override val sykmeldingId: String, override val journalpostId: String) :
-        Journalpost {
+    data class Ukjent(
+        override val sykmeldingId: String,
+        override val journalpostId: String,
+        override val dokumenter: List<Dokument>
+    ) : Journalpost {
         override val type = TsmJournalpostType.UKJENT
     }
 }
