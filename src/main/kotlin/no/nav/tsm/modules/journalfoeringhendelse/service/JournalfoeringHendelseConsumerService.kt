@@ -59,9 +59,7 @@ class JournalfoeringHendelseConsumerService(
                             null
                         } else {
                             hentBrukerIdFraJournalpost(journalpostMetadata)?.let { ident ->
-                                pdlClient.getPerson(ident).getOrElse {
-                                    null
-                                }
+                                pdlClient.getPerson(ident).getOrElse { null }
                             }
                         }
                     }
@@ -70,7 +68,8 @@ class JournalfoeringHendelseConsumerService(
                     "Got PDL person ident ${pasient?.identer?.first { !it.historisk && it.gruppe == PdlIdentgruppe.FOLKEREGISTERIDENT }?.ident} for journalpostId: $journalpostId"
                 )
                 // Handel utenlandsk sykmelding this way
-                // Handel norsk sykmelding this way, fetch behandelr with tsm-behandler and some ocr service
+                // Handel norsk sykmelding this way, fetch behandelr with tsm-behandler and some ocr
+                // service
 
             } else {
                 logger.info(

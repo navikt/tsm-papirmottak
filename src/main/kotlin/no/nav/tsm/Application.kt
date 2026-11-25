@@ -2,6 +2,8 @@ package no.nav.tsm
 
 import io.ktor.server.application.*
 import no.nav.tsm.modules.journalfoeringhendelse.configureJournalfoeringHendelse
+import no.nav.tsm.modules.norsksykmelding.configureNorskSykmelding
+import no.nav.tsm.modules.utenlandsksykmelding.configureUtenlandskSykmelding
 import no.nav.tsm.plugins.*
 
 fun main(args: Array<String>) {
@@ -13,4 +15,6 @@ fun Application.module() {
     configureMonitoring()
 
     configureJournalfoeringHendelse()
+    configureUtenlandskSykmelding()
+    configureNorskSykmelding()
 }

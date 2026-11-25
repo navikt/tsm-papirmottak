@@ -15,8 +15,7 @@ This the high level flow of the application
     id4[tsm-papirmottak] <--> |Fetch journalpostMetdata| id5[saf]
     id4[tsm-papirmottak] <--> |Fetch behandler| id6[tsm-behandler]
     id4[tsm-papirmottak] <--> |Fetch pasient| id7[tsm-pdl-cache]
-    id4[tsm-papirmottak] <--> |Write topic| C[\tsm.papirsykmeldinger
-/]
+    id4[tsm-papirmottak] <--> |Write topic| C[\tsm.journalposter/]
 ```
 
 ## Requirements for developing the application
