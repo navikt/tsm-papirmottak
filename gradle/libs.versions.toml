@@ -13,6 +13,7 @@ joarkHendelse = "2.0.0"
 kafkaAvro = "8.4.1"
 mockk = "1.14.12"
 arrow = "2.3.0.1"
+tsm-sykmeldinger-input = "32"
 
 [libraries]
 # Monitoring and observability
@@ -30,6 +31,8 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 kafka-avro = { module = "io.confluent:kafka-avro-serializer", version.ref = "kafkaAvro" }
 teamdokumenthandtering-avro = { module = "no.nav.teamdokumenthandtering:teamdokumenthandtering-avro-schemas", version.ref = "joarkHendelse" }
 
+# TSM Dependencies
+tsm-sykmeldinger-input = { module = "no.nav.tsm.sykmelding:input", version.ref = "tsm-sykmeldinger-input" }
 
 # Transitive Vulnerabilities
 jackson-core = { module = "tools.jackson.core:jackson-core", version.ref = "jackson" }

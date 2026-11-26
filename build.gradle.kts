@@ -32,6 +32,8 @@ dependencies {
     implementation(libs.kafka.avro)
     implementation(libs.teamdokumenthandtering.avro)
 
+    implementation(libs.tsm.sykmeldinger.input)
+
     implementation(libs.logback.classic)
     implementation(libs.logback.encoder)
     constraints {

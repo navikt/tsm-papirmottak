@@ -2,6 +2,7 @@ package no.nav.tsm.core.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import no.nav.tsm.modules.journalfoeringhendelse.saf.models.Dokument
+import no.nav.tsm.sykmelding.input.core.model.Sykmelding
 
 enum class TsmJournalpostType {
     NORSK_PAPIR_SYKMELDING_OCR_OK,
@@ -21,8 +22,7 @@ sealed interface Journalpost {
         override val sykmeldingId: String,
         override val journalpostId: String,
         override val dokumenter: List<Dokument>,
-        val ocrFile: String,
-        val newSykmeldingFormat: String,
+        val sykmelding: Sykmelding,
     ) : Journalpost {
         override val type = TsmJournalpostType.NORSK_PAPIR_SYKMELDING_OCR_OK
     }
@@ -31,8 +31,6 @@ sealed interface Journalpost {
         override val sykmeldingId: String,
         override val journalpostId: String,
         override val dokumenter: List<Dokument>,
-        val newSykmeldingFormat: String,
-        val ocrFile: String,
     ) : Journalpost {
         override val type = TsmJournalpostType.NORSK_PAPIR_SYKMELDING_OCR_DELVIS
     }

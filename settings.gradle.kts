@@ -8,6 +8,7 @@ dependencyResolutionManagement {
     repositories {
         maven("https://github-package-registry-mirror.gc.nav.no/cached/maven-release") {
             content {
+                includeGroup("no.nav.tsm.sykmelding")
                 includeGroup("no.nav.tsm")
                 includeGroup("no.nav.teamdokumenthandtering")
             }
@@ -25,6 +26,7 @@ dependencyResolutionManagement {
         }
         mavenCentral {
             content {
+                excludeGroup("no.nav.tsm.sykmelding")
                 excludeGroup("no.nav.teamdokumenthandtering")
                 excludeGroup("no.nav.tsm")
                 excludeGroup("dev.hayden")
